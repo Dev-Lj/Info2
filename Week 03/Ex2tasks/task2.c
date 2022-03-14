@@ -57,4 +57,6 @@ int main(int argc, char **argv) {
  * Testing:
  * bin/task2 3 4 2 1 5 6
  * bin/task2 309 200 1322 1889 654 354 786 456 100
+ * bin/task2 -309 200 1322 1889 654 -354 786 456 100
+ * bin/task2 0 1 3 5 654 -354 786 456 100
  **/
