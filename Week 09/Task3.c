@@ -35,53 +35,28 @@ TreeNode* insert(TreeNode* root, int val) {
     {
         last->left = newNode;
     }
-    return newNode;
+    return root;
 }
 
-TreeNode* insert_node(TreeNode* node, TreeNode* insertNode) {
-    if (insertNode->val < node->val)
-    {
-        node->left = insertNode;
-    } else
-    {
-        node->right = insertNode;
-    }
-    return node;
-}
-
-void rt_right(TreeNode* node) {
-    
-}
-
-void rt_left(TreeNode* node) {
-
-}
-
-int inorderTreeWalk(TreeNode* node, int height) {
-    if (node == NULL)
-    {
-        return 0;
-    }
-    int left = inorderTreeWalk(node->left, height);
-    int right = inorderTreeWalk(node->right, height);
-    printf("%d, balance: %d\n", node->val, left - right);
-    return height + 1;
-}
-
-void balanceTree(TreeNode* node, int balance) {
+int to_ordered_array(TreeNode* node, int* arr, int pos) {
     if (node != NULL)
     {
-        balanceTree(node->left, balance-1);
-        if (balance == 2)
-        {
-            rt_left(node);
-            balance = 0;
-        } else if(balance == -2) {
-            rt_right(node);
-            balance = 0;
-        }
-        balanceTree(node->right, balance+1);
+        pos = to_ordered_array(node->left, arr, pos);
+        arr[pos++] = node->val;
+        pos = to_ordered_array(node->right, arr, pos);
     }
+    return pos;
+}
+
+TreeNode* balance_tree(TreeNode* root, int* arr, int l, int r) {
+    if (l < r)
+    {
+        int m = (l+r)/2;
+        root = insert(root, arr[m]);
+        balance_tree(root, arr, l, m);
+        balance_tree(root, arr, m+1, r);
+    }
+    return root;
 }
 
 void printTree(TreeNode* root) {
@@ -102,17 +77,20 @@ void printTree(TreeNode* root) {
 }
 
 int main() {
-    TreeNode* root = insert(NULL, 20);
-    insert(root, 11);
-    insert(root, 22);
-    TreeNode* current = insert(root, 23);
-    insert_node(current, insert(NULL, 14));
-    root = insert_node(insert(NULL, 40), root);
+    TreeNode* root = insert(NULL, 40);
+    insert(root, 20);
     insert(root, 50);
-    insert(root, 45);
-    insert(root, 51);
+    insert(root,11);
+    insert(root, 22);
+    insert(root, 26);
+    insert(root, 23);
 
-    inorderTreeWalk(root, 0);
+    int arr[7];
+    to_ordered_array(root, arr, 0);
+    // root should be freed
+    TreeNode* newroot = balance_tree(NULL, arr, 0, 7);
+    printTree(newroot);
+    return 0;
 }
 
 // To run: gcc Task3.c -o bin/Task3 -g; ./bin/Task3
