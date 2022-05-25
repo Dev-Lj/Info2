@@ -209,18 +209,52 @@ void printTree(TreeNode* root) {
     printTree(root->right);
 }
 
+// From Midterm 2 of 2021:
+int toMaxRankTree(TreeNode* node, int rank) {
+    if (node != NULL)
+    {
+        rank = toMaxRankTree(node->right, rank);
+        node->val = rank;
+        rank = toMaxRankTree(node->left, rank+1);
+    }
+    return rank;
+}
+
+// From Midterm 2 of 2020:
+int smallest(TreeNode* n) {
+    if(n->left != NULL) {
+        return smallest(n->left);
+    } else {
+        return n->val;
+    }
+}
+
+// From Midterm 2 of 2020:
+int minAggregate(TreeNode* n, int sum) {
+    if (n != NULL)
+    {
+        sum = minAggregate(n->left, sum);
+        sum += n->val;
+        n->val = sum;
+        sum = minAggregate(n->right, sum);
+    }
+    return sum;
+}
+
 int main() {
-    TreeNode* root = insert(NULL, 20);
-    insert(root, 10);
-    insert(root, 30);
-    insert(root, 25);
-    insert(root, 35);
-    insert(root, 32);
+    TreeNode* root = insert(NULL, 10);
+    insert(root, 3);
+    insert(root, 20);
+    insert(root, 1);
+    insert(root, 7);
+    insert(root, 4);
+    insert(root, 15);
+    insert(root, 21);
+    insert(root, 12);
+    insert(root, 17);
     printTree(root);
     printf("-----------\n");
-
-    TreeNode* to_rotate = search(root, 30);
-    rotateRight(root, to_rotate);
+    toMaxRankTree(root, 0);
     printTree(root);
 }
 
