@@ -90,6 +90,24 @@ void print(Stack stack) {
 	printf("\n");
 }
 
+void insert_ordered(Stack* s, int item) {
+	int tmp = pop(s);
+	if (tmp == -1) {
+		push(s, item);
+		return;
+	}
+
+	if (item > tmp) {
+		insert_ordered(s, item);
+	} else {
+		push(s, tmp);
+		push(s, item);
+		return;
+	}
+	push(s, tmp);
+	
+}
+
 bool is_equal(Stack s1, Stack s2) {
 	if (s1.capacity == s2.capacity && s1.top == s2.top)
 	{
@@ -141,15 +159,15 @@ Stack sortStack(Stack* stack) {
 
 int main() {
 	Stack s1 = create(4);
-	push(&s1, 3);
-	push(&s1, 12);
-	push(&s1, 2);
-	push(&s1, 4);
+	insert_ordered(&s1, 3);
+	insert_ordered(&s1, 12);
+	insert_ordered(&s1, 2);
+	insert_ordered(&s1, 4);
 
 	print(s1);
 
-	s1 = sortStack(&s1);
-	print(s1);
+	// s1 = sortStack(&s1);
+	// print(s1);
 
   	return 0;
 }
